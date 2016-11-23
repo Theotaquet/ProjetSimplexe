@@ -63,5 +63,5 @@ public class Simplexe {
 		boucle pour traiter chaque inconnue
 		for(int i=0;i<matrice.getDonnees().get(0).size()-(matrice.getDonnees().size()-1)-1;i++)
 		str += "La valeur de l'inconnue " + i + " doit valoir " + matrice.getDonnees().get
-	}*/
+	}/*/
 }
