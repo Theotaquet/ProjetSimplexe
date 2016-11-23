@@ -63,26 +63,6 @@ public class Interaction {
 			}
 			matrice.ajouterLigne(listeCoeff);
 		}
-		
-		/*---------OLD---------CODE---------------------*/
-		/*List<List<Double>> tmpCoeffList = new ArrayList<>();
-		for(int i=0;i<nbIneq;i++) {
-			List<>
-			//coeffContraintes.add(tmpCoeffList);
-			System.out.print("Fonction contrainte n°"+(i+1)+": ");
-			tmpCoeff = scan.next();
-			
-			//tmp = tmpCoeff.split(",");
-			for(int j=0;j<nbInc;j++) {
-				tmpCoeffList.get(i).add(Double.parseDouble(tmpCoeff.split(",")[j]));
-				if(j==nbInc-1) {
-					for(int k=0;k<nbIneq;k++) {
-						if(i==0)
-						tmpCoeffList.get(i).add(e)
-					}
-				}
-			}
-		}*/
 	}
 	
 	public void remplirTableauInitial() {
