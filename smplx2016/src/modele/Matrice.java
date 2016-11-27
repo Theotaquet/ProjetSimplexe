@@ -5,21 +5,22 @@ import java.util.ArrayList;
 
 public class Matrice {
 
-	private List<List<Double>> donnees;
+	private List<ArrayList<Double>> donnees;
 	
 	public Matrice() {
-		List<List<Double>> donnees = new ArrayList<List<Double>>();
+		donnees = new ArrayList<ArrayList<Double>>();
 	}
 	
-	public List<List<Double>> getDonnees() {
+	public List<ArrayList<Double>> getDonnees() {
 		return donnees;
 	}
 	
-	public void remplirTableau(List<List<Double>> newdonnees) {
+	public void remplirTableau(List<ArrayList<Double>> newdonnees) {
 		this.donnees = newdonnees;
 	}
 	
-	public void ajouterLigne(List<Double> ligne) {
+	public void ajouterLigne(ArrayList<Double> ligne) {
 		this.donnees.add(ligne);
 	}
+
 }
