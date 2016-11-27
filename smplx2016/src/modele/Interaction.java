@@ -22,7 +22,7 @@ public class Interaction {
 	//remplirTableauInitial()
 	int nbInc=0, nbIneq=0;
 		Scanner scan = new Scanner(System.in);
-		String tmpCoeff="";
+		String tmpCoeff;
 		//Compter inconnues
 		while(nbInc < 1) {
 			System.out.print("Entrez le nombre d'inconnues: ");
@@ -58,8 +58,10 @@ public class Interaction {
 		
 		//On ajoute les coefficients pour chaque inéquation
 		for(int i=0;i<nbIneq;i++) {
+			tmpCoeff="";
 			listeCoeff.clear();
 			while(tmpCoeff.split(",").length!=nbInc+1) {
+				System.out.println("debug "+i);
 				System.out.print("Inéquation n°"+(i+1)+": ");
 				tmpCoeff = scan.next();
 				if(tmpCoeff.split(",").length!=nbInc+1) {
@@ -80,6 +82,28 @@ public class Interaction {
 				}
 			}
 			matrice.ajouterLigne(listeCoeff);
+		}
+		//Ajout de la fonction objectif
+		System.out.println("Entrez les "+nbInc+" coefficients des inconnues de la fonction objectif");
+		System.out.println("Exemple: 1,4,3.5");
+		tmpCoeff="";
+		while(tmpCoeff.split(",").length!=nbInc) {
+			try {
+				System.out.print("Coefficients de la fonction objectif: ");
+				tmpCoeff = scan.next();
+			}
+			catch(Exception e) {
+				System.out.println("Fonction objectif entrée incorrectement.");
+			}
+			if(tmpCoeff.split(",").length!=nbInc) {
+				System.out.println("Le nombre de termes insérés ("+tmpCoeff.split(",").length+") n'est pas égal à celui attendu ("+nbInc+").");
+			}
+		}
+		for(int i=0;i<nbInc;i++) {
+			listeCoeff.add(Double.parseDouble(tmpCoeff.split(",")[i]));
+		}
+		for(int i=0;i<nbIneq+1;i++) {
+			listeCoeff.add(0.);
 		}
 		scan.close();
 	}
