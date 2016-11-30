@@ -83,6 +83,7 @@ public class Interaction {
 			matrice.ajouterLigne(listeCoeff);
 		}
 		//Ajout de la fonction objectif
+		listeCoeff.clear();
 		System.out.println("Entrez les "+nbInc+" coefficients des inconnues de la fonction objectif");
 		System.out.println("Exemple: 1,4,3.5");
 		tmpCoeff="";
@@ -104,6 +105,7 @@ public class Interaction {
 		for(int i=0;i<nbIneq+1;i++) {
 			listeCoeff.add(0.);
 		}
+		matrice.ajouterLigne(listeCoeff);
 		scan.close();
 	}
 	
