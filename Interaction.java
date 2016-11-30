@@ -3,16 +3,16 @@ package modele;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//question: doit gérer la création des objets matrice, mais contient un attribut matrice? OUI
-//question: stocker en attributs toutes les infos reçues de l'utilisateur pour pouvoir les réutiliser dans Simplexe?
+//question: doit gÃ©rer la crÃ©ation des objets matrice, mais contient un attribut matrice? OUI
+//question: stocker en attributs toutes les infos reÃ§ues de l'utilisateur pour pouvoir les rÃ©utiliser dans Simplexe?
 public class Interaction {
 	
 	private Matrice matrice;
 	
-	//question: constructeur par défaut?
-	//réponse : Non, car il faut initialiser la matrice sinon les méthodes renvoient un NullPointerException
+	//question: constructeur par dÃ©faut?
+	//rÃ©ponse : Non, car il faut initialiser la matrice sinon les mÃ©thodes renvoient un NullPointerException
 	
-	//Constructeur pour éviter le NullPointerException en initialisant la matrice
+	//Constructeur pour Ã©viter le NullPointerException en initialisant la matrice
 	
 	public Interaction() {
 		matrice = new Matrice();
@@ -39,7 +39,7 @@ public class Interaction {
 		}
 		//Compter inequations
 		while(nbIneq < 1) {
-			System.out.print("Entrez le nombre d'inéquations: ");
+			System.out.print("Entrez le nombre d'inÃ©quations: ");
 			try {
 				nbIneq = scan.nextInt();
 			}
@@ -48,23 +48,23 @@ public class Interaction {
 				scan.next();
 			}
 			if(nbIneq < 1) {
-				System.out.println("Nombre d'inéquations incorrect.");
+				System.out.println("Nombre d'inÃ©quations incorrect.");
 			}
 		}
-		System.out.println("Entrez les "+nbInc+" coefficients des inconnues suivis du terme indépendant des inéquations, séparés par des virgules.");
+		System.out.println("Entrez les "+nbInc+" coefficients des inconnues suivis du terme indÃ©pendant des inÃ©quations, sÃ©parÃ©s par des virgules.");
 		System.out.println("Exemple: 2,7,-3,18");
-		//Liste temporaire à laquelle on ajoute les inéquations une à une
+		//Liste temporaire Ã  laquelle on ajoute les inÃ©quations une Ã  une
 		ArrayList<Double> listeCoeff = new ArrayList<Double>();
 		
-		//On ajoute les coefficients pour chaque inéquation
+		//On ajoute les coefficients pour chaque inÃ©quation
 		for(int i=0;i<nbIneq;i++) {
 			tmpCoeff="";
 			listeCoeff.clear();
 			while(tmpCoeff.split(",").length!=nbInc+1) {
-				System.out.print("Inéquation n°"+(i+1)+": ");
+				System.out.print("InÃ©quation nÂ°"+(i+1)+": ");
 				tmpCoeff = scan.next();
 				if(tmpCoeff.split(",").length!=nbInc+1) {
-					System.out.println("Le nombre de termes insérés ("+tmpCoeff.split(",").length+") n'est pas égal à celui attendu ("+(nbInc+1)+").");
+					System.out.println("Le nombre de termes insÃ©rÃ©s ("+tmpCoeff.split(",").length+") n'est pas Ã©gal Ã  celui attendu ("+(nbInc+1)+").");
 				}
 			}
 			for(int j=0;j<nbInc+1;j++) {
@@ -93,10 +93,10 @@ public class Interaction {
 				tmpCoeff = scan.next();
 			}
 			catch(Exception e) {
-				System.out.println("Fonction objectif entrée incorrectement.");
+				System.out.println("Fonction objectif entrÃ©e incorrectement.");
 			}
 			if(tmpCoeff.split(",").length!=nbInc) {
-				System.out.println("Le nombre de termes insérés ("+tmpCoeff.split(",").length+") n'est pas égal à celui attendu ("+nbInc+").");
+				System.out.println("Le nombre de termes insÃ©rÃ©s ("+tmpCoeff.split(",").length+") n'est pas Ã©gal Ã  celui attendu ("+nbInc+").");
 			}
 		}
 		for(int i=0;i<nbInc;i++) {
@@ -108,21 +108,11 @@ public class Interaction {
 		matrice.ajouterLigne(listeCoeff);
 		scan.close();
 	}
-	
-	public void remplirTableauInitial() {
-		
-	}
+
 	
 	public Matrice getMatrice() {
 		return matrice;
 	}
-	
-	public void afficherSolOptimale() {
-		
-	}
-	
-	public void afficherTableau() {
-		
-	}
+
 	
 }
