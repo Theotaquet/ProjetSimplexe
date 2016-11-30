@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Interaction {
 	
 	private Matrice matrice;
-	
+	//Test Changements
 	//question: constructeur par défaut?
 	//réponse : Non, car il faut initialiser la matrice sinon les méthodes renvoient un NullPointerException
 	
