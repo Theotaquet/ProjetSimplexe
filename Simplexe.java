@@ -6,10 +6,14 @@ public class Simplexe {
 	private Matrice matrice;
 	private List<Integer> pivot;
 	
-	//soit on donne la matrice en argument du constructeur, soit on la retire des attributs de Simplexe et on la renseigne à l'appel de chaque méthode
+	//soit on donne la matrice en argument du constructeur, soit on la retire des attributs de Simplexe et on la renseigne Ã  l'appel de chaque mÃ©thode
 	public Simplexe(Matrice matrice) {
 		this.matrice = matrice;
 		pivot = new ArrayList<>();
+	}
+	
+	public void calculerSolution(){
+		
 	}
 	
 	public void rechercherPivot() {
@@ -37,7 +41,7 @@ public class Simplexe {
 	public void rendrePivotUnitaire() {
 		double pivotVal = matrice.getDonnees().get(pivot.get(0)).get(pivot.get(1));
 		for(int i=0;i<matrice.getDonnees().get(0).size()-1;i++) {
-			//setter de la liste correspondant à la ligne du pivot, avec en argument l'indice de l'élément visé, et l'élément divisé par le pivot
+			//setter de la liste correspondant Ã  la ligne du pivot, avec en argument l'indice de l'Ã©lÃ©ment visÃ©, et l'Ã©lÃ©ment divisÃ© par le pivot
 			matrice.getDonnees().get(pivot.get(0)).set(i, matrice.getDonnees().get(pivot.get(0)).get(i) / pivotVal);
 		}
 	}
@@ -46,7 +50,7 @@ public class Simplexe {
 		
 	}
 	
-	public boolean isSolution() {
+	public static boolean isSolution(Matrice matrice) {
 		for(int i=0;i<matrice.getDonnees().get(matrice.getDonnees().size()-1).get(i);i++){
 			if(matrice.getDonnees().get(matrice.getDonnees().size()-1).get(i)>0)
 				return false;
