@@ -1,25 +1,17 @@
 package modele;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//question: doit gérer la création des objets matrice, mais contient un attribut matrice? OUI
-//question: stocker en attributs toutes les infos reçues de l'utilisateur pour pouvoir les réutiliser dans Simplexe?
 public class Interaction {
 	
 	private Matrice matrice;
-	
-	//question: constructeur par défaut?
-	//réponse : Non, car il faut initialiser la matrice sinon les méthodes renvoient un NullPointerException
-	
+
 	//Constructeur pour éviter le NullPointerException en initialisant la matrice
-	
 	public Interaction() {
 		matrice = new Matrice();
 	}
 	
 	public void demanderInfos() {
-	//remplirTableauInitial()
 	int nbInc=0, nbIneq=0;
 		Scanner scan = new Scanner(System.in);
 		String tmpCoeff;
@@ -108,11 +100,8 @@ public class Interaction {
 		matrice.ajouterLigne(listeCoeff);
 		scan.close();
 	}
-
 	
 	public Matrice getMatrice() {
 		return matrice;
 	}
-
-	
 }
