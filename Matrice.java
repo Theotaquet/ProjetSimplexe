@@ -1,5 +1,4 @@
 package modele;
-
 import java.util.List;
 import java.util.ArrayList;
 
@@ -15,12 +14,7 @@ public class Matrice {
 		return donnees;
 	}
 	
-	public void remplirTableau(List<ArrayList<Double>> newdonnees) {
-		this.donnees = newdonnees;
-	}
-	
 	public void ajouterLigne(ArrayList<Double> ligne) {
 		this.donnees.add(ligne);
 	}
-
 }
