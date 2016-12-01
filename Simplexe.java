@@ -1,52 +1,51 @@
 package modele;
-import java.util.*;
 
 public class Simplexe {
-	
-	private Matrice matrice;
-	private List<Integer> pivot;
-	
-	//soit on donne la matrice en argument du constructeur, soit on la retire des attributs de Simplexe et on la renseigne à l'appel de chaque méthode
-	public Simplexe(Matrice matrice) {
-		this.matrice = matrice;
-		pivot = new ArrayList<>();
-	}
-	
-	public void calculerSolution(){
 		
-	}
+	public static void calculerSolution(Matrice matrice) {
+		int pivotLigne, pivotCol;
+		while(!isSolution(matrice)) {
+				pivotCol = rechercherPivotCol(matrice);
+				pivotLigne = rechercherPivotLigne(matrice, pivotCol);
+				rendrePivotUnitaire(matrice, pivotLigne, pivotCol);
+				actualiserMatrice(matrice);
+				afficherMatrice(matrice);
+		}
+	}	
 	
-	public void rechercherPivot() {
+	public static int rechercherPivotCol(Matrice matrice) {
 		double max = 0.;
 		int maxCol = 0;
 		for(int i=0;i<matrice.getDonnees().get(0).size()-2;i++) {
 			if(matrice.getDonnees().get(matrice.getDonnees().size()-1).get(i)>max) {
 				max = matrice.getDonnees().get(matrice.getDonnees().size()-1).get(i);
-				maxCol = matrice.getDonnees().indexOf(matrice.getDonnees().get(matrice.getDonnees().size()-1).get(i));
+				maxCol = matrice.getDonnees().indexOf(matrice.getDonnees().get(matrice.getDonnees().size()-1).get(i)); //simplifier et peut etre moyen de ne le faire qu'une seule fois en dehors de la boucle
 			}
 		}
-		pivot.add(1, maxCol);
-		
+		return maxCol;
+	}
+	
+	public static int rechercherPivotLigne(Matrice matrice, int pivotCol) {
 		double min = Double.MAX_VALUE;
 		int minLigne = 0;
 		for(int i=0;i<matrice.getDonnees().size()-2;i++) {
-			if(matrice.getDonnees().get(i).get(matrice.getDonnees().size()-2)/matrice.getDonnees().get(i).get(maxCol)<min) {
-				min = matrice.getDonnees().get(i).get(matrice.getDonnees().size()-2)/matrice.getDonnees().get(i).get(maxCol);
-				minLigne = matrice.getDonnees().indexOf(matrice.getDonnees().get(i));
+			if(matrice.getDonnees().get(i).get(matrice.getDonnees().size()-2)/matrice.getDonnees().get(i).get(pivotCol)<min) {
+				min = matrice.getDonnees().get(i).get(matrice.getDonnees().size()-2)/matrice.getDonnees().get(i).get(pivotCol);
+				minLigne = matrice.getDonnees().indexOf(matrice.getDonnees().get(i)); //idem que rechercherPivotCol
 			}
 		}
-		pivot.add(0, minLigne);
+		return minLigne;
 	}
 	
-	public void rendrePivotUnitaire() {
-		double pivotVal = matrice.getDonnees().get(pivot.get(0)).get(pivot.get(1));
+	public static void rendrePivotUnitaire(Matrice matrice, int pivotLigne, int pivotCol) {
+		double pivotVal = matrice.getDonnees().get(pivotLigne).get(pivotCol);
 		for(int i=0;i<matrice.getDonnees().get(0).size()-1;i++) {
 			//setter de la liste correspondant à la ligne du pivot, avec en argument l'indice de l'élément visé, et l'élément divisé par le pivot
-			matrice.getDonnees().get(pivot.get(0)).set(i, matrice.getDonnees().get(pivot.get(0)).get(i) / pivotVal);
+			matrice.getDonnees().get(pivotLigne).set(i, matrice.getDonnees().get(pivotLigne).get(i) / pivotVal);
 		}
 	}
 	
-	public void actualiserMatrice() {
+	public static void actualiserMatrice(Matrice matrice) {
 		
 	}
 	
@@ -58,14 +57,14 @@ public class Simplexe {
 		return true;
 	}
 	
-	public String toString() {
-		return null;
-	}
-	
 	/*public String afficherSolution() {
 		String str = "";
 		boucle pour traiter chaque inconnue
 		for(int i=0;i<matrice.getDonnees().get(0).size()-(matrice.getDonnees().size()-1)-1;i++)
 		str += "La valeur de l'inconnue " + i + " doit valoir " + matrice.getDonnees().get
 	}*/
+	
+	public static String afficherMatrice(Matrice matrice) {
+		return null;
+	}
 }
