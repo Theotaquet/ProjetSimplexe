@@ -4,9 +4,9 @@ public class StartSimplexe {
 
 	public static void main(String[] args) {
 		
-		Interaction inter1 = new Interaction();
-		inter1.demanderInfos();
+		Interaction inter = new Interaction();
+		inter.demanderInfos();
 		
-		Simplexe.calculerSolution(inter1.getMatrice());
+		Simplexe.calculerSolution(inter.getMatrice());
 	}
 }
