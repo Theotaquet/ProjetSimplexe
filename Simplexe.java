@@ -6,9 +6,8 @@ import java.util.ArrayList;
 public class Simplexe {
 
 	public static void calculerSolution(Matrice matrice) {
-//		String res = "";
+
 		List<Double> solBase = new ArrayList<Double>();
-		
 		ajouterMatriceIdentite(matrice);
 		
 		//boucle correspondant aux itérations du Simplexe
@@ -18,28 +17,9 @@ public class Simplexe {
 			rendrePivotUnitaire(matrice, pivotLigne, pivotCol);
 			actualiserMatrice(matrice, pivotLigne, pivotCol);
 			System.out.println(matrice.toString());
-//			res += matrice.toString();
 			afficherSolBase(matrice, solBase);
-//			genererSolBase(matrice, solBase);
-//			res += "\n\nSB = { ";
-//			for(int i=0;i<solBase.size()-1;i++) {
-//				if(i==solBase.size()-2)
-//					res += solBase.get(i) + " } \n";
-//				else
-//					res += solBase.get(i) + " ; ";
-//			}
-//			
-//			res += "Z = " + solBase.get(solBase.size()-1)];
-			
 		}
 		afficherSolution(matrice, solBase);
-//		res += "Solution optimale:\n"
-//				+ "La valeur optimale de Z est de " + solBase.get(solBase.size()-1) + "\n";
-//		//boucle sur chaque variable de la fonction objectif
-//		for(int i=0;i<matrice.getMat().get(0).size()-(matrice.getMat().size()-1)-1;i++) {
-//			res += "x" + (i+1) + " doit valoir " + solBase.get(i) + "\n";
-//		}
-//		return res;
 	}
 	
 	//ajout de la matrice identité dans la matrice du Simplexe
@@ -66,7 +46,7 @@ public class Simplexe {
 			if(element>max)
 				max = element;
 		}
-		
+//		ancienne boucle:
 //		for(int i=0;i<derniereLigne.size()-2;i++) {
 //		if(derniereLigne.get(i)>max)
 //			max = derniereLigne.get(i);
@@ -89,6 +69,7 @@ public class Simplexe {
 			}
 		}
 		
+//		ancienne boucle:
 //		for(int i=0;i<matrice.getMat().size()-2;i++) {
 //			if(matrice.getMat().get(i).get(derniereCol)/matrice.getMat().get(i).get(pivotCol)<min) {
 //				min = matrice.getMat().get(i).get(derniereCol) / matrice.getMat().get(i).get(pivotCol);
@@ -109,6 +90,7 @@ public class Simplexe {
 			pivotLigneListe.set(pivotLigneListe.indexOf(element), element / pivotVal);
 		}
 		
+//		ancienne boucle:	
 //		for(int i=0;i<pivotLigneListe.size()-1;i++) {
 //			pivotLigneListe.set(i, pivotLigneListe.get(i) / pivotVal);
 //		}
