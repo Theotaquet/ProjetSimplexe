@@ -2,6 +2,7 @@ package modele;
 
 import java.util.List;
 import java.util.ArrayList;
+
 public class Matrice {
 
 	private List<List<Double>> donnees;
@@ -28,5 +29,4 @@ public class Matrice {
 		}
 		return tab;
 	}
-
 }
