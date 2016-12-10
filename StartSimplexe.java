@@ -1,5 +1,4 @@
 package modele;
-import modele.*;
 
 public class StartSimplexe {
 
