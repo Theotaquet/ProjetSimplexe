@@ -149,7 +149,7 @@ public class Simplexe {
 			else
 				sol += solBase.get(i) + " ; ";
 		}
-		sol += "Z = " + solBase.get(derniereCol) + "\n----------------------------------------------";
+		sol += "Z = " + solBase.get(derniereCol) + "\n----------------------------------------------\n";
 		
 		return sol;
 	}  
