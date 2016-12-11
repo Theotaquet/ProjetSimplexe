@@ -9,7 +9,7 @@ public class Interaction {
 	private Matrice matrice;
 	
 	public Interaction() {
-		matrice = new Matrice();
+		this.matrice = new Matrice();
 	}
 	
 	//demande des données à l'utilisateur
@@ -65,7 +65,7 @@ public class Interaction {
 			for(int j=0;j<incNb+1;j++) {
 				listeCoeff.add(Double.parseDouble(tmpCoeff.split(",")[j]));
 			}
-			matrice.ajouterLigne(new ArrayList<Double>(listeCoeff));
+			this.matrice.ajouterLigne(new ArrayList<Double>(listeCoeff));
 		}
 
 		//ajout de la fonction objectif
@@ -90,11 +90,11 @@ public class Interaction {
 			listeCoeff.add(Double.parseDouble(tmpCoeff.split(",")[i]));
 		}
 		
-		matrice.ajouterLigne(new ArrayList<Double>(listeCoeff));
+		this.matrice.ajouterLigne(new ArrayList<Double>(listeCoeff));
 		scan.close();
 	}
-	
-	public Matrice getMatrice() {
-		return matrice;
+
+	public void executerSimplexe() {
+		System.out.println(Simplexe.calculerSolution(this.matrice));
 	}
 }
