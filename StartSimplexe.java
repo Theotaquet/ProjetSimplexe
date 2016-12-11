@@ -6,7 +6,7 @@ public class StartSimplexe {
 		
 		Interaction inter = new Interaction();
 		inter.demanderInfos();
-		
-		Simplexe.calculerSolution(inter.getMatrice());
+			
+		inter.executerSimplexe();
 	}
 }
