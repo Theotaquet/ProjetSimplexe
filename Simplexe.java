@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 public class Simplexe {
 
-	public static void calculerSolution(Matrice matrice) {
+	public static String calculerSolution(Matrice matrice) {
+		String res = "";
 		List<Double> solBase = new ArrayList<Double>();
 		
 		ajouterMatriceIdentite(matrice);
@@ -15,17 +16,19 @@ public class Simplexe {
 		}
 		
 		//boucle correspondant aux itérations du Simplexe
-		System.out.println(matrice.toString());
-		afficherSolBase(matrice, solBase);
+		res += matrice.toString();
+		res += genererSolBase(matrice, solBase);
 		while(!isSolution(matrice)) {
 			int pivotCol = rechercherPivotCol(matrice);
 			int pivotLigne = rechercherPivotLigne(matrice, pivotCol);
 			rendrePivotUnitaire(matrice, pivotLigne, pivotCol);
 			actualiserMatrice(matrice, pivotLigne, pivotCol);
-			System.out.println(matrice.toString());
-			afficherSolBase(matrice, solBase);
+			res += matrice.toString();
+			res += genererSolBase(matrice, solBase);
 		}
-		afficherSolution(matrice, solBase);
+		res += genererSolOpti(matrice, solBase);
+		
+		return res;
 	}
 	
 	//ajout de la matrice identité dans la matrice du Simplexe
@@ -107,7 +110,7 @@ public class Simplexe {
 	}
 
 	//génération de l'affichage de la solution de base
-	public static void afficherSolBase(Matrice matrice, List<Double> solBase) {
+	public static String genererSolBase(Matrice matrice, List<Double> solBase) {
 		String sol = "";
 		int ligne1 = 0;
 		int derniereCol = matrice.getMat().get(0).size() - 1;
@@ -146,9 +149,9 @@ public class Simplexe {
 			else
 				sol += solBase.get(i) + " ; ";
 		}
-		sol += "Z = " + solBase.get(derniereCol) + "\n----------------------------------------------";
+		sol += "Z = " + solBase.get(derniereCol) + "\n----------------------------------------------\n";
 		
-		System.out.println(sol);
+		return sol;
 	}  
 	
 	//vérification de la solution de base
@@ -161,14 +164,17 @@ public class Simplexe {
 		return true;
 	}
 	
-	//affichage de la solution optimale
-	public static void afficherSolution(Matrice matrice, List<Double> solBase) {
-		String res = "Solution optimale:\n"
+	//génération de l'affichage de la solution optimale
+	public static String genererSolOpti(Matrice matrice, List<Double> solBase) {
+		String sol = "";
+		
+		sol += "Solution optimale:\n"
 				+ "La valeur optimale de Z est de " + solBase.get(solBase.size()-1) + "\n";
 		//boucle sur chaque variable de la fonction objectif
 		for(int i=0;i<matrice.getMat().get(0).size()-(matrice.getMat().size()-1)-1;i++) {
-			res += "x" + (i+1) + " doit valoir " + solBase.get(i) + "\n";
+			sol += "x" + (i+1) + " doit valoir " + solBase.get(i) + "\n";
 		}
-		System.out.println(res);
+		
+		return sol;
 	}
 }
