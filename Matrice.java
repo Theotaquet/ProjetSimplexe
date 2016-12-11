@@ -5,28 +5,29 @@ import java.util.ArrayList;
 
 public class Matrice {
 
-	private List<List<Double>> donnees;
+	private List<List<Double>> mat;
 	
 	public Matrice() {
-		donnees = new ArrayList<List<Double>>();
+		this.mat = new ArrayList<List<Double>>();
 	}
 	
-	public List<List<Double>> getDonnees() {
-		return donnees;
+	public List<List<Double>> getMat() {
+		return this.mat;
 	}
 	
 	public void ajouterLigne(List<Double> ligne) {
-		donnees.add(ligne);
+		this.mat.add(ligne);
 	}
 	
 	public String toString() {
-		String tab="";
-		for(List<Double> listeCoeff : donnees) {
-			for(Double termeDonnee : listeCoeff) {
-				tab+=termeDonnee+"\t";
+		String tab = "";
+		
+		for(List<Double> ligne : this.mat) {
+			for(Double element : ligne) {
+				tab += element + "\t";
 			}
-			tab+="\n";
+			tab += "\n";
 		}
 		return tab;
-	}
+  }
 }
