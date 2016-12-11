@@ -28,6 +28,7 @@ public class Matrice {
 			}
 			tab += "\n";
 		}
+		
 		return tab;
-  }
+  	}
 }
