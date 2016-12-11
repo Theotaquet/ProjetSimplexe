@@ -7,11 +7,12 @@ public class Simplexe {
 
 	public static void calculerSolution(Matrice matrice) {
 		List<Double> solBase = new ArrayList<Double>();
+		
+		ajouterMatriceIdentite(matrice);
+		
 		for(int i=0;i<matrice.getMat().get(0).size();i++) {
 			solBase.add(0.);
 		}
-		
-		ajouterMatriceIdentite(matrice);
 		
 		//boucle correspondant aux itérations du Simplexe
 		System.out.println(matrice.toString());
@@ -30,9 +31,9 @@ public class Simplexe {
 	//ajout de la matrice identité dans la matrice du Simplexe
 	public static void ajouterMatriceIdentite(Matrice matrice) {
 		//boucle sur les lignes correspondant aux contraintes
-		for(int i=0;i<matrice.getMat().size()-1;i++) { //pas -2 ????????????????????????????????????????????
+		for(int i=0;i<matrice.getMat().size()-1;i++) {
 			List<Double> ligne = matrice.getMat().get(i);
-			for(int j=0;j<matrice.getMat().size()-1;j++) { //idem ????????????????????????????????
+			for(int j=0;j<matrice.getMat().size()-1;j++) {
 				if(j==i)
 					ligne.add(ligne.size()-1, 1.);
 				else
@@ -85,7 +86,7 @@ public class Simplexe {
 		List<Double> pivotLigneListe = matrice.getMat().get(pivotLigne);
 		
 		//boucle sur les éléments de la ligne du pivot
-		for(int i=0;i<pivotLigneListe.size()-1;i++) {
+		for(int i=0;i<pivotLigneListe.size();i++) {
 			pivotLigneListe.set(i, pivotLigneListe.get(i) / pivotVal);
 		}
 	}
