@@ -6,11 +6,16 @@ import java.util.ArrayList;
 public class Simplexe {
 
 	public static void calculerSolution(Matrice matrice) {
-
 		List<Double> solBase = new ArrayList<Double>();
+		for(int i=0;i<matrice.getMat().get(0).size();i++) {
+			solBase.add(0.);
+		}
+		
 		ajouterMatriceIdentite(matrice);
 		
 		//boucle correspondant aux itérations du Simplexe
+		System.out.println(matrice.toString());
+		afficherSolBase(matrice, solBase);
 		while(!isSolution(matrice)) {
 			int pivotCol = rechercherPivotCol(matrice);
 			int pivotLigne = rechercherPivotLigne(matrice, pivotCol);
@@ -25,14 +30,19 @@ public class Simplexe {
 	//ajout de la matrice identité dans la matrice du Simplexe
 	public static void ajouterMatriceIdentite(Matrice matrice) {
 		//boucle sur les lignes correspondant aux contraintes
-		for(int i=0;i<matrice.getMat().size()-2;i++) {
+		for(int i=0;i<matrice.getMat().size()-1;i++) { //pas -2 ????????????????????????????????????????????
 			List<Double> ligne = matrice.getMat().get(i);
-			for(int j=0;j<matrice.getMat().size()-2;j++) {
+			for(int j=0;j<matrice.getMat().size()-1;j++) { //idem ????????????????????????????????
 				if(j==i)
 					ligne.add(ligne.size()-1, 1.);
 				else
 					ligne.add(ligne.size()-1, 0.);
 			}
+		}
+		//adaptation de la ligne de la fonction objectif
+		List<Double> ligne = matrice.getMat().get(matrice.getMat().size()-1);
+		for(int i=0;i<matrice.getMat().size();i++) {
+			ligne.add(0.);
 		}
 	}
 
@@ -46,11 +56,6 @@ public class Simplexe {
 			if(element>max)
 				max = element;
 		}
-//		ancienne boucle:
-//		for(int i=0;i<derniereLigne.size()-2;i++) {
-//		if(derniereLigne.get(i)>max)
-//			max = derniereLigne.get(i);
-//		}
 		
 		return derniereLigneListe.indexOf(max);
 	} 
@@ -63,19 +68,13 @@ public class Simplexe {
 		
 		//boucle sur les lignes de la matrice, sauf celle de la fonction objectif
 		for(List<Double> ligne : matrice.getMat().subList(0, matrice.getMat().size() - 1)) {
-			if(ligne.get(derniereCol)/ligne.get(pivotCol)<min) {
-				min = ligne.get(derniereCol) / ligne.get(pivotCol);
-				minLigne = matrice.getMat().indexOf(ligne);
+			if(ligne.get(pivotCol)>0 && ligne.get(derniereCol)>=0) {
+				if(ligne.get(derniereCol)/ligne.get(pivotCol)<min) {
+					min = ligne.get(derniereCol) / ligne.get(pivotCol);
+					minLigne = matrice.getMat().indexOf(ligne);
+				}
 			}
 		}
-		
-//		ancienne boucle:
-//		for(int i=0;i<matrice.getMat().size()-2;i++) {
-//			if(matrice.getMat().get(i).get(derniereCol)/matrice.getMat().get(i).get(pivotCol)<min) {
-//				min = matrice.getMat().get(i).get(derniereCol) / matrice.getMat().get(i).get(pivotCol);
-//				minLigne = i;
-//			}
-//		}
 		
 		return minLigne;
 	}
@@ -86,18 +85,13 @@ public class Simplexe {
 		List<Double> pivotLigneListe = matrice.getMat().get(pivotLigne);
 		
 		//boucle sur les éléments de la ligne du pivot
-		for(double element : pivotLigneListe) {
-			pivotLigneListe.set(pivotLigneListe.indexOf(element), element / pivotVal);
+		for(int i=0;i<pivotLigneListe.size()-1;i++) {
+			pivotLigneListe.set(i, pivotLigneListe.get(i) / pivotVal);
 		}
-		
-//		ancienne boucle:	
-//		for(int i=0;i<pivotLigneListe.size()-1;i++) {
-//			pivotLigneListe.set(i, pivotLigneListe.get(i) / pivotVal);
-//		}
 	}
 	
 	//modification des autres lignes en fonction de la ligne du pivot
-	public static void actualiserMatrice(Matrice matrice, int pivotCol, int pivotLigne) {
+	public static void actualiserMatrice(Matrice matrice, int pivotLigne, int pivotCol) {
 		//boucle sur les autres lignes de la matrice
 		for(List<Double> ligne : matrice.getMat()) {
 			if(matrice.getMat().indexOf(ligne)!=pivotLigne) {
@@ -114,20 +108,20 @@ public class Simplexe {
 	//génération de l'affichage de la solution de base
 	public static void afficherSolBase(Matrice matrice, List<Double> solBase) {
 		String sol = "";
-		boolean varBase = true;
 		int ligne1 = 0;
 		int derniereCol = matrice.getMat().get(0).size() - 1;
 		
 		//boucle sur les colonnes de la matrice, qui correspondent aux variables du problème
 		for(int i=0;i<derniereCol;i++) {
+			boolean varBase = true;
 			boolean presence1 = false;
 			//boucle sur les éléments de la colonne actuelle tant qu'il n'y a que des 0 et un seul 1
 			int j = 0;
-			while(varBase) {
+			while(varBase && j<matrice.getMat().size()-1) {
 				if( (matrice.getMat().get(j).get(i)!=0&&matrice.getMat().get(j).get(i)!=1) || (matrice.getMat().get(j).get(i)==1&&presence1) )
 					varBase = false;
 				//test sur la présence de 1
-				if(matrice.getMat().get(j).get(i)==1) {
+				else if(matrice.getMat().get(j).get(i)==1) {
 					presence1 = true;
 					ligne1 = j;
 				}
@@ -140,18 +134,19 @@ public class Simplexe {
 			else
 				solBase.set(i, 0.);
 		}
-		
+		//attribution du Z
 		solBase.set(derniereCol, 0 - (matrice.getMat().get(matrice.getMat().size()-1).get(derniereCol)));
 		
-		sol += "\n\nSB = { ";
-		for(double element : solBase) {
-			if(solBase.indexOf(element)==solBase.size()-2)
-				sol += element + " } \n";
+		//génération de la chaîne
+		sol += "SB = { ";
+		for(int i=0;i<solBase.size()-1;i++) {
+			if(i==solBase.size()-2)
+				sol += solBase.get(i) + " } \n";
 			else
-				sol += element + " ; ";
+				sol += solBase.get(i) + " ; ";
 		}
+		sol += "Z = " + solBase.get(derniereCol) + "\n----------------------------------------------";
 		
-		sol += "Z = " + solBase.get(derniereCol);
 		System.out.println(sol);
 	}  
 	
