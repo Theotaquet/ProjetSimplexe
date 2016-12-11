@@ -23,8 +23,16 @@ public class Matrice {
 		String tab = "";
 		
 		for(List<Double> ligne : this.mat) {
+			boolean debutLigne = true;
+			
 			for(Double element : ligne) {
-				tab += element + "\t";
+				if(debutLigne) {
+					tab+="       ";
+					debutLigne=false;
+				}
+				String newElement = String.format("%8.3f  ", element);
+				newElement = newElement.replace(",", ".");
+				tab += newElement + " ";
 			}
 			tab += "\n";
 		}
