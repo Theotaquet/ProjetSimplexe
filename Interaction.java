@@ -1,30 +1,31 @@
 package modele;
-
 import java.util.*;
+
 /**
+ * La classe Interaction permet de gÃ©rer toutes les interactions avec l'utilisateur. 
+ * Elle est caractÃ©risÃ©e par une matrice qu'elle va crÃ©er sur base des informations fournies par l'utilisateur.
  *
- * La classe Interaction permet de gérer toutes les interactions avec l'utilisateur. 
- * Elle est caractérisée par une matrice qu'elle va créer sur base des informations fournies par l'utilisateur.
  * @author Nicolas Verhaeghe
- * @author Théo Constant
+ * @author ThÃ©o Constant
  * @author Florian Vangaeveren
- * 
  */
 public class Interaction {
+	
 	/**
-	 * La matrice qu'elle crée et qu'elle va remplir.
-	 * 
+	 * La matrice qu'elle crÃ©e et qu'elle remplit.
 	 */
 	private Matrice matrice;
+	
 	/**
-	 * Constructeur Interaction, il instancie la matrice.
-	 * 
+	 * Constructeur Interaction.
+	 * Il instancie la matrice.
 	 */
 	public Interaction() {
 		this.matrice = new Matrice();
 	}
+	
 	/**
-	 * Demande des données à l'utilisateur.
+	 * Demande des donnÃ©es Ã  l'utilisateur.
 	 */
 	public void demanderInfos() {
 		int incNb = 0, ineqNb = 0;
@@ -45,9 +46,9 @@ public class Interaction {
 				System.out.println("Nombre d'inconnues incorrect.");
 		}
 
-		//test sur le nombre d'inéquations
+		//test sur le nombre d'inÃ©quations
 		while(ineqNb<1) {
-			System.out.print("Entrez le nombre d'inéquations: ");
+			System.out.print("Entrez le nombre d'inÃ©quations: ");
 			try {
 				ineqNb = scan.nextInt();
 			}
@@ -56,50 +57,50 @@ public class Interaction {
 				scan.next();
 			}
 			if(ineqNb<1)
-				System.out.println("Nombre d'inéquations incorrect.");
+				System.out.println("Nombre d'inÃ©quations incorrect.");
 		}
-		//liste temporaire à laquelle on ajoute les inéquations ainsi que la fonction objectif un à un
+		//liste temporaire Ã  laquelle on ajoute les inÃ©quations ainsi que la fonction objectif un Ã  un
 		List<Double> listeCoeff = new ArrayList<Double>();
 
 		//ajout de la fonction objectif
 		listeCoeff.clear();
 		System.out.println("Entrez les " + incNb + " coefficients des inconnues de la fonction objectif");
 		System.out.println("Exemple: 1,4,3.5");
-		if(incNb==1){
+		if(incNb==1)
 			tmpCoeff = "1,4";
-		}else{
+		else
 			tmpCoeff = "";
-		}
+			
 		while(tmpCoeff.split(",").length!=incNb) {
 			try {
 				System.out.print("Coefficients de la fonction objectif: ");
 				tmpCoeff = scan.next();
 			}
 			catch(Exception e) {
-				System.out.println("Fonction objectif entrée incorrectement.");
+				System.out.println("Fonction objectif entrÃ©e incorrectement.");
 			}
 			if(tmpCoeff.split(",").length!=incNb)
-				System.out.println("Le nombre de termes insérés ("+tmpCoeff.split(",").length+") n'est pas égal à celui attendu ("+incNb+").");
+				System.out.println("Le nombre de termes insÃ©rÃ©s ("+tmpCoeff.split(",").length+") n'est pas Ã©gal Ã  celui attendu ("+incNb+").");
 		}
 
 		for(int i=0;i<incNb;i++) {
 			listeCoeff.add(Double.parseDouble(tmpCoeff.split(",")[i]));
 		}
-		//Sauvegarde des coefficients de la fonction objectif pour l'ajouter plus tard dans la matrice
+		//sauvegarde des coefficients de la fonction objectif pour l'ajouter plus tard dans la matrice
 		List<Double> objectif = new ArrayList<Double>(listeCoeff);
 
-		System.out.println("Entrez les " + incNb + " coefficients des variables suivis du terme indépendant des contraintes, séparés par des virgules.");
+		System.out.println("Entrez les " + incNb + " coefficients des variables suivis du terme indÃ©pendant des contraintes, sÃ©parÃ©s par des virgules.");
 		System.out.println("Exemple: 2,7,-3,18");
 
-		//ajout des coefficients pour chaque inéquation
+		//ajout des coefficients pour chaque inÃ©quation
 		for(int i=0;i<ineqNb;i++) {
 			tmpCoeff="";
 			listeCoeff.clear();
 			while(tmpCoeff.split(",").length!=incNb+1) {
-				System.out.print("Inéquation n°"+(i+1)+": ");
+				System.out.print("InÃ©quation nÂ°"+(i+1)+": ");
 				tmpCoeff = scan.next();
 				if(tmpCoeff.split(",").length!=incNb+1) {
-					System.out.println("Le nombre de termes insérés ("+tmpCoeff.split(",").length+") n'est pas égal à celui attendu ("+(incNb+1)+").");
+					System.out.println("Le nombre de termes insÃ©rÃ©s ("+tmpCoeff.split(",").length+") n'est pas Ã©gal Ã  celui attendu ("+(incNb+1)+").");
 				}
 			}
 			for(int j=0;j<incNb+1;j++){
@@ -108,15 +109,15 @@ public class Interaction {
 			this.matrice.ajouterLigne(new ArrayList<Double>(listeCoeff));
 		}
 
-		//Ajout de la fonction objectif dans la matrice à l'aide de la liste créée précédemment.
+		//ajout de la fonction objectif dans la matrice Ã  l'aide de la liste crÃ©Ã©e prÃ©cÃ©demment.
 		this.matrice.ajouterLigne(new ArrayList<Double>(objectif));
 		scan.close();
 	}
+	
 	/**
-	 * Appelle la méthode calculerSolution de la classe Simplexe et affiche la chaîne qu'elle retourne.
+	 * Appelle la mÃ©thode calculerSolution de la classe Simplexe et affiche la chaÃ®ne qu'elle retourne.
 	 */
 	public void executerSimplexe() {
 		System.out.println(Simplexe.calculerSolution(this.matrice));
 	}
-
 }
