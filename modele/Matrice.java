@@ -1,42 +1,48 @@
 package modele;
-
 import java.util.*;
+
 /**
- * La classe Matrice dÈfinit l'objet qu'on va utiliser dans la Classe Interaction.
- * Elle est caractÈrisÈe par une liste de listes de nombres. 
- * @author Nicolas Verhaeghe
- * @author ThÈo Constant
- * @author Florian Vangaeveren
+ * La classe Matrice d√©finit l'objet qu'on va utiliser dans la classe Interaction.
+ * Elle est caract√©ris√©e par une liste de listes de nombres, qui constitue r√©ellement la matrice.
  *
+ * @author Nicolas Verhaeghe
+ * @author Th√©o Constant
+ * @author Florian Vangaeveren
  */
 public class Matrice {
+	
 	/**
-	 * le tableau en deux dimensions.
+	 * La matrice √† deux dimensions, sous forme de listes.
 	 */
 	private List<List<Double>> mat;
+	
 	/**
-	 * Constructeur Matrice, il instancie la liste des listes.
+	 * Constructeur Matrice.
+	 * Il instancie la liste de listes.
 	 */
 	public Matrice() {
 		this.mat = new ArrayList<List<Double>>();
 	}
+	
 	/**
-	 * Getter de l'attribut mat
-	 * @return Le tableau en deux dimensions
+	 * Renvoie la matrice.
+	 * @return La matrice en deux dimensions.
 	 */
 	public List<List<Double>> getMat() {
 		return this.mat;
 	}
+	
 	/**
-	 * Ajoute une ligne au tableau.
-	 * @param ligne La ligne ‡ rajouter.
+	 * Ajoute une ligne √† la matrice.
+	 * @param ligne La ligne √† rajouter.
 	 */
 	public void ajouterLigne(List<Double> ligne) {
 		this.mat.add(ligne);
 	}
+	
 	/**
-	 * Renvoie le tableau.
-	 * @return Le tableau sous forme de chaÓne de caractËres.
+	 * Renvoie l'affichage de la matrice.
+	 * @return La matrice sous forme de cha√Æne de caract√®res.
 	 */
 	@Override
 	public String toString() {
@@ -59,5 +65,4 @@ public class Matrice {
 		
 		return tab;
   	}
-
 }
