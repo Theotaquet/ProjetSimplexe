@@ -170,6 +170,8 @@ public class TestSimplexe {
 			solBase.add(0.);
 		}
 		
+		matIdAl.get(0).set(1,0.);
+		
 		assertTrue("La matrice des solutions de base est effectivement générée.",smplx.genererSolBase(matId, solBase).contains("{    0.000 ;    0.000 ;    0.000 ;   24.000 ;   24.000 ;   15.000 }"));
 	}
 
