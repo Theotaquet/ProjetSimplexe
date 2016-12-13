@@ -1,31 +1,49 @@
 package modele;
+import java.io.FileNotFoundException;
 import java.util.*;
 
+import serialisation.Impression;
+
 /**
- * La classe Interaction permet de gÃ©rer toutes les interactions avec l'utilisateur. 
- * Elle est caractÃ©risÃ©e par une matrice qu'elle va crÃ©er sur base des informations fournies par l'utilisateur.
+ * La classe Interaction permet de gérer toutes les interactions avec l'utilisateur. 
+ * Elle est caractérisée par une matrice qu'elle va créer sur base des informations fournies par l'utilisateur.
  *
  * @author Nicolas Verhaeghe
- * @author ThÃ©o Constant
+ * @author Théo Constant
  * @author Florian Vangaeveren
  */
 public class Interaction {
-
+	
 	/**
-	 * La matrice qu'elle crÃ©e et qu'elle remplit.
+	 * La matrice qu'elle crée et qu'elle remplit.
 	 */
 	private Matrice matrice;
+
+	/**
+	 * La sortie permettant de sauvegarder les résultats d'un problème
+	 */
+	private Impression sortie;
 
 	/**
 	 * Constructeur Interaction.
 	 * Il instancie la matrice.
 	 */
 	public Interaction() {
+		Scanner filePrepare = new Scanner(System.in);
+		boolean erreurs=true;
 		this.matrice = new Matrice();
+		while(erreurs) {
+			try {
+				sortie = new Impression(fichierSortie(filePrepare));
+				erreurs=false;
+			} catch (FileNotFoundException e) {
+				System.out.println("Fichier introuvable, veuillez réessayer.");
+			}
+		}
 	}
 
 	/**
-	 * Demande des donnÃ©es Ã  l'utilisateur.
+	 * Demande des données à l'utilisateur.
 	 */
 	public void demanderInfos() {
 		int varNb = 0, contrNb = 0;
@@ -42,7 +60,7 @@ public class Interaction {
 				scan.next();
 			}
 			if(varNb<1)
-				System.out.println("Veuillez entrer une valeur numÃ©rique supÃ©rieure Ã  0.");
+				System.out.println("Veuillez entrer une valeur numérique supérieure à 0.");
 
 		}
 
@@ -57,9 +75,9 @@ public class Interaction {
 				scan.next();
 			}
 			if(contrNb<1)
-				System.out.println("Veuillez entrer une valeur numÃ©rique supÃ©rieure Ã  0.");
+				System.out.println("Veuillez entrer une valeur numérique supérieure à 0.");
 		}
-		//liste temporaire Ã  laquelle on ajoute les contraintes ainsi que la fonction objectif un Ã  un
+		//liste temporaire à laquelle on ajoute les contraintes ainsi que la fonction objectif un à un
 		List<Double> listeCoeff = new ArrayList<Double>();
 
 		//ajout de la fonction objectif
@@ -77,10 +95,10 @@ public class Interaction {
 				tmpCoeff = scan.next();
 			}
 			catch(InputMismatchException e) {
-				System.out.println("Fonction objectif entrÃ©e incorrectement.");
+				System.out.println("Fonction objectif entrée incorrectement.");
 			}
 			if(tmpCoeff.split(",").length!=varNb)
-				System.out.println("Le nombre de termes insÃ©rÃ©s ("+tmpCoeff.split(",").length+") n'est pas Ã©gal Ã  celui attendu ("+varNb+").");
+				System.out.println("Le nombre de termes insérés ("+tmpCoeff.split(",").length+") n'est pas égal à celui attendu ("+varNb+").");
 		}
 
 		for(int i=0;i<varNb;i++) {
@@ -88,7 +106,7 @@ public class Interaction {
 				listeCoeff.add(Double.parseDouble(tmpCoeff.split(",")[i]));
 			}
 			catch(NumberFormatException e) {
-				System.out.print("Le terme Ã  la position "+(i+1)+" n'es pas valide, veuillez le remplacer : ");
+				System.out.print("Le terme à la position "+(i+1)+" n'es pas valide, veuillez le remplacer : ");
 				boolean erreur=true;
 				while(erreur) {
 					try {
@@ -96,7 +114,7 @@ public class Interaction {
 						erreur=false;
 					}
 					catch(InputMismatchException z) {
-						System.out.print("Nouvelle valeur incorrecte, veuillez rÃ©essayer : ");
+						System.out.print("Nouvelle valeur incorrecte, veuillez réessayer : ");
 						scan.next();
 					}
 				}
@@ -105,7 +123,7 @@ public class Interaction {
 		//sauvegarde des coefficients de la fonction objectif pour l'ajouter plus tard dans la matrice
 		List<Double> objectif = new ArrayList<Double>(listeCoeff);
 
-		System.out.println("Entrez les " + varNb + " coefficients des variables suivis du terme indÃ©pendant des contraintes, sÃ©parÃ©s par des virgules.");
+		System.out.println("Entrez les " + varNb + " coefficients des variables suivis du terme indépendant des contraintes, séparés par des virgules.");
 		System.out.println("Exemple: 2,7,-3,18");
 
 		//ajout des coefficients pour chaque contrainte
@@ -113,10 +131,10 @@ public class Interaction {
 			tmpCoeff="";
 			listeCoeff.clear();
 			while(tmpCoeff.split(",").length!=varNb+1) {
-				System.out.print("InÃ©quation nÂ°"+(i+1)+": ");
+				System.out.print("Inéquation n°"+(i+1)+": ");
 				tmpCoeff = scan.next();
 				if(tmpCoeff.split(",").length!=varNb+1) {
-					System.out.println("Le nombre de termes insÃ©rÃ©s ("+tmpCoeff.split(",").length+") n'est pas Ã©gal Ã  celui attendu ("+(varNb+1)+").");
+					System.out.println("Le nombre de termes insérés ("+tmpCoeff.split(",").length+") n'est pas égal à celui attendu ("+(varNb+1)+").");
 				}
 			}
 			for(int j=0;j<varNb+1;j++){
@@ -124,7 +142,7 @@ public class Interaction {
 					listeCoeff.add(Double.parseDouble(tmpCoeff.split(",")[j]));
 				}
 				catch(NumberFormatException e) {
-					System.out.print("Le terme Ã  la position "+(j+1)+" n'es pas valide, veuillez le remplacer : ");
+					System.out.print("Le terme à la position "+(j+1)+" n'es pas valide, veuillez le remplacer : ");
 					boolean erreur=true;
 					while(erreur) {
 						try {
@@ -132,7 +150,7 @@ public class Interaction {
 							erreur=false;
 						}
 						catch(InputMismatchException z) {
-							System.out.print("Nouvelle valeur incorrecte, veuillez rÃ©essayer : ");
+							System.out.print("Nouvelle valeur incorrecte, veuillez réessayer : ");
 							scan.next();
 						}
 					}
@@ -141,15 +159,21 @@ public class Interaction {
 			this.matrice.ajouterLigne(new ArrayList<Double>(listeCoeff));
 		}
 
-		//ajout de la fonction objectif dans la matrice Ã  l'aide de la liste crÃ©Ã©e prÃ©cÃ©demment
+		//ajout de la fonction objectif dans la matrice à l'aide de la liste créée précédemment
 		this.matrice.ajouterLigne(new ArrayList<Double>(objectif));
 		scan.close();
 	}
 
+	public String fichierSortie(Scanner reader) {
+		System.out.print("Nom du fichier de sortie: ");
+		return reader.next();
+	}
+
 	/**
-	 * Appelle la mÃ©thode calculerSolution de la classe Simplexe et affiche la chaÃ®ne qu'elle retourne.
+	 * Appelle la méthode calculerSolution de la classe Simplexe et affiche la chaîne qu'elle retourne.
 	 */
 	public void executerSimplexe() {
-		System.out.println(Simplexe.calculerSolution(this.matrice));
+		//System.out.println(Simplexe.calculerSolution(this.matrice));
+		sortie.ecrireDonnees(Simplexe.calculerSolution(this.matrice));
 	}
 }
