@@ -19,7 +19,23 @@ public class Simplexe {
 	 */
 	public static String calculerSolution(Matrice matrice) {
 		String res = "---------------------------------------------------------------------------------\nRESOLUTION DU SIMPLEXE\n";
-		res+="---------------------------------------------------------------------------------\n";
+		res+="---------------------------------------------------------------------------------\nMax Z = ";
+		for(int i=0;i<matrice.getMat().get(matrice.getMat().size()-1).size();i++) {
+			res+=matrice.getMat().get(matrice.getMat().size()-1).get(i)+" x"+(i+1)+" ";
+		}
+		res+="\n";
+		for(int i=0;i<matrice.getMat().size()-1;i++) {
+			for(int j=0;j<matrice.getMat().get(i).size();j++) {
+				if(j==matrice.getMat().get(i).size()-1) {
+					res+="<= "+matrice.getMat().get(i).get(j)+"\n";
+				}
+				else {
+					res+=matrice.getMat().get(i).get(j)+" x"+(i+1)+" ";
+				}
+			}
+		}
+		res+="\n---------------------------------------------------------------------------------\n";
+		res+="Tableau Initial\n---------------------------------------------------------------------------------\n";
 		List<Double> solBase = new ArrayList<Double>();
 		
 		ajouterMatriceIdentite(matrice);
