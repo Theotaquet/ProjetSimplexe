@@ -24,17 +24,24 @@ public class Interaction {
 	 */
 	private Impression sortie;
 
+	
+	/**
+	 * Le scanner permettant de lire les données entrées par l'utilisateur
+	 */
+	private Scanner userInput;
+	
+	
 	/**
 	 * Constructeur Interaction.
 	 * Il instancie la matrice.
 	 */
 	public Interaction() {
-		Scanner filePrepare = new Scanner(System.in);
+		userInput = new Scanner(System.in);
 		boolean erreurs=true;
 		this.matrice = new Matrice();
 		while(erreurs) {
 			try {
-				sortie = new Impression(fichierSortie(filePrepare));
+				sortie = new Impression(fichierSortie());
 				erreurs=false;
 			} catch (FileNotFoundException e) {
 				System.out.println("Fichier introuvable, veuillez réessayer.");
@@ -46,18 +53,19 @@ public class Interaction {
 	 * Demande des données à l'utilisateur.
 	 */
 	public void demanderInfos() {
+		//On s'assure que la matrice est vide en cas de relancement du programme
+		matrice.getMat().clear();
 		int varNb = 0, contrNb = 0;
-		Scanner scan = new Scanner(System.in);
 		String tmpCoeff;
 
 		//test sur le nombre de variables
 		while(varNb<1) {
 			System.out.print("Entrez le nombre de variables: ");
 			try {
-				varNb = scan.nextInt();
+				varNb = userInput.nextInt();
 			}
 			catch(InputMismatchException e) {
-				scan.next();
+				userInput.next();
 			}
 			if(varNb<1)
 				System.out.println("Veuillez entrer une valeur numérique supérieure à 0.");
@@ -68,11 +76,11 @@ public class Interaction {
 		while(contrNb<1) {
 			System.out.print("Entrez le nombre de contraintes: ");
 			try {
-				contrNb = scan.nextInt();
+				contrNb = userInput.nextInt();
 			}
 			catch(InputMismatchException e) {
 				contrNb = -1;
-				scan.next();
+				userInput.next();
 			}
 			if(contrNb<1)
 				System.out.println("Veuillez entrer une valeur numérique supérieure à 0.");
@@ -92,7 +100,7 @@ public class Interaction {
 		while(tmpCoeff.split(",").length!=varNb) {
 			try {
 				System.out.print("Coefficients de la fonction objectif: ");
-				tmpCoeff = scan.next();
+				tmpCoeff = userInput.next();
 			}
 			catch(InputMismatchException e) {
 				System.out.println("Fonction objectif entrée incorrectement.");
@@ -110,12 +118,12 @@ public class Interaction {
 				boolean erreur=true;
 				while(erreur) {
 					try {
-						listeCoeff.add(scan.nextDouble());
+						listeCoeff.add(userInput.nextDouble());
 						erreur=false;
 					}
 					catch(InputMismatchException z) {
 						System.out.print("Nouvelle valeur incorrecte, veuillez réessayer : ");
-						scan.next();
+						userInput.next();
 					}
 				}
 			}
@@ -132,7 +140,7 @@ public class Interaction {
 			listeCoeff.clear();
 			while(tmpCoeff.split(",").length!=varNb+1) {
 				System.out.print("Inéquation n°"+(i+1)+": ");
-				tmpCoeff = scan.next();
+				tmpCoeff = userInput.next();
 				if(tmpCoeff.split(",").length!=varNb+1) {
 					System.out.println("Le nombre de termes insérés ("+tmpCoeff.split(",").length+") n'est pas égal à celui attendu ("+(varNb+1)+").");
 				}
@@ -146,12 +154,12 @@ public class Interaction {
 					boolean erreur=true;
 					while(erreur) {
 						try {
-							listeCoeff.add(scan.nextDouble());
+							listeCoeff.add(userInput.nextDouble());
 							erreur=false;
 						}
 						catch(InputMismatchException z) {
 							System.out.print("Nouvelle valeur incorrecte, veuillez réessayer : ");
-							scan.next();
+							userInput.next();
 						}
 					}
 				}
@@ -161,12 +169,15 @@ public class Interaction {
 
 		//ajout de la fonction objectif dans la matrice à l'aide de la liste créée précédemment
 		this.matrice.ajouterLigne(new ArrayList<Double>(objectif));
-		scan.close();
 	}
-
-	public String fichierSortie(Scanner reader) {
+	
+	/**
+	 * Donne un nom au fichier de sortie afin de pouvoir y écrire
+	 * @return Le nom du fichier où écrire
+	 */
+	public String fichierSortie() {
 		System.out.print("Nom du fichier de sortie: ");
-		return reader.next();
+		return userInput.next();
 	}
 
 	/**
@@ -174,5 +185,27 @@ public class Interaction {
 	 */
 	public void executerSimplexe() {
 		sortie.ecrireDonnees(Simplexe.calculerSolution(this.matrice));
+	}
+	
+	/**
+	 * Demande à l'utilisateur s'il désire recommencer l'algorithme avec un nouveau problème
+	 * @return Le choix de l'utilisateur
+	 */
+	public boolean isRecommencer() {
+		String reponse="";
+		while(!reponse.equalsIgnoreCase("o") || !reponse.equalsIgnoreCase("n")) {
+			System.out.println("Voulez-vous recommencer avec un autre problème ? (O/N)");
+			reponse=userInput.next();
+			if(reponse.equalsIgnoreCase("o")) {
+				return true;
+			}
+			else if(reponse.equalsIgnoreCase("n")) {
+				return false;
+			}
+			else {
+				System.out.println("Erreur - Veuillez répondre par oui (O) ou non (N).");
+			}
+		}
+		return false;
 	}
 }
