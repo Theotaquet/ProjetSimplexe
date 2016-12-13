@@ -139,7 +139,7 @@ public class Simplexe {
 		}
 	}
 	/**
-	 * Modifie les autres lignes en fonction de la ligne du pivot
+	 * Modifie les autres lignes en fonction de la ligne du pivot.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
 	 * @param pivotLigne L'indice de la ligne du pivot.
 	 * @param pivotCol L'indice de la colonne du pivot.
