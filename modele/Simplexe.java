@@ -1,18 +1,15 @@
 package modele;
-
 import java.util.*;
-
 import exception.RapportsIncorrectsException;
-/**
-*
-* La classe Simplexe s'occupe des différents traitements propre à la méthode du Simplexe.
-* La classe ne comporte que des méthodes statiques, dont calculerSolution qui appellent toutes les autres méthodes.
-* @author Nicolas Verhaeghe
-* @author Théo Constant
-* @author Florian Vangaeveren
-* 
-*/
 
+/**
+ * La classe Simplexe s'occupe des différents traitements propres à la méthode du Simplexe.
+ * Elle ne comporte que des méthodes statiques, dont calculerSolution qui appelle toutes les autres méthodes.
+ *
+ * @author Nicolas Verhaeghe
+ * @author Théo Constant
+ * @author Florian Vangaeveren
+ */
 public class Simplexe {
 	
 	/**
@@ -20,7 +17,6 @@ public class Simplexe {
 	 * @param matrice La matrice sur laquelle on applique les traitements.
 	 * @return Les différentes itérations avec leur solution de base, ainsi que la solution optimale, sous forme de chaîne de caractères.
 	 */
-	
 	public static String calculerSolution(Matrice matrice) {
 		String res = "---------------------------------------------------------------------------------\nRESOLUTION DU SIMPLEXE\n";
 		res+="---------------------------------------------------------------------------------\n";
@@ -59,6 +55,7 @@ public class Simplexe {
 		
 		return res;
 	}
+	
 	/**
 	 * Ajoute la matrice identité dans la matrice du Simplexe.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
@@ -80,6 +77,7 @@ public class Simplexe {
 			ligne.add(0.);
 		}
 	}
+	
 	/**
 	 * Recherche la colonne du pivot.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
@@ -97,6 +95,7 @@ public class Simplexe {
 		
 		return derniereLigneListe.indexOf(max);
 	} 
+	
 	/**
 	 * Recherche la ligne du pivot.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
@@ -123,6 +122,7 @@ public class Simplexe {
 		}
 		return minLigne;
 	}
+	
 	/**
 	 * Modifie la ligne du pivot en rendant le pivot unitaire.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
@@ -138,6 +138,7 @@ public class Simplexe {
 			pivotLigneListe.set(i, pivotLigneListe.get(i) / pivotVal);
 		}
 	}
+	
 	/**
 	 * Modifie les autres lignes en fonction de la ligne du pivot.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
@@ -157,6 +158,7 @@ public class Simplexe {
 			}
 		}
 	}
+	
 	/**
 	 * Crée et concatène une chaîne de caractères qui contiendra la solution de base de l'itération traitée.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
@@ -208,6 +210,7 @@ public class Simplexe {
 		
 		return sol;
 	}  
+	
 	/**
 	 * Vérifie si la solution de base de l'itération traitée est admissible comme solution optimale.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
@@ -221,6 +224,7 @@ public class Simplexe {
 		}	
 		return true;
 	}
+	
 	/**
 	 * Crée et concatène une chaîne de caractères qui contiendra la solution optimale.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
