@@ -1,23 +1,25 @@
 package modele;
-
 /**
-* Classe StartSimplexe.
-* Elle g√®re le d√©marrage de l'application.
-*
-* @author Nicolas Verhaeghe
-* @author Th√©o Constant
-* @author Florian Vangaeveren
-*/
+ * Classe de dÈmarrage de l'application.
+ * @author Nicolas Verhaeghe
+ * @author ThÈo Constant
+ * @author Florian Vangaeveren
+ * 
+ */
 public class StartSimplexe {
-	
 	/**
-	 * Cr√©e l'objet Interaction et appelle ses m√©thodes.
+	 * CrÈe l'objet Interaction et appelle ses mÈthodes.
 	 * @param args
 	 */
 	public static void main(String[] args) {
-			
-			Interaction inter = new Interaction();
+
+		Interaction inter = new Interaction();
+		boolean firstLaunch=true;
+		while(firstLaunch || inter.isRecommencer()) {
+			firstLaunch=false;
 			inter.demanderInfos();
 			inter.executerSimplexe();
+		}
 	}
+
 }
