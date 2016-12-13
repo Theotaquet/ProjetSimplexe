@@ -1,12 +1,15 @@
 package modele;
+
 /**
  * Classe StartSimplexe.
  * Elle gère le démarrage de l'application.
+ *
  * @author Nicolas Verhaeghe
  * @author Théo Constant
  * @author Florian Vangaeveren
  */
 public class StartSimplexe {
+	
 	/**
 	 * Crée l'objet Interaction et appelle ses méthodes.
 	 * @param args
@@ -21,5 +24,4 @@ public class StartSimplexe {
 			inter.executerSimplexe();
 		}
 	}
-
 }
