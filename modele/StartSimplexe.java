@@ -1,14 +1,14 @@
 package modele;
 /**
- * Classe de dÈmarrage de l'application.
+ * Classe StartSimplexe.
+ * Elle g√®re le d√©marrage de l'application.
  * @author Nicolas Verhaeghe
- * @author ThÈo Constant
+ * @author Th√©o Constant
  * @author Florian Vangaeveren
- * 
  */
 public class StartSimplexe {
 	/**
-	 * CrÈe l'objet Interaction et appelle ses mÈthodes.
+	 * Cr√©e l'objet Interaction et appelle ses m√©thodes.
 	 * @param args
 	 */
 	public static void main(String[] args) {
