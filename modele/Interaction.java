@@ -1,7 +1,6 @@
 package modele;
 import java.io.FileNotFoundException;
 import java.util.*;
-
 import serialisation.Impression;
 
 /**
