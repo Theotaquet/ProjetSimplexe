@@ -5,52 +5,53 @@ import java.util.*;
 import serialisation.Impression;
 
 /**
- * La classe Interaction permet de gérer toutes les interactions avec l'utilisateur. 
- * Elle est caractérisée par une matrice qu'elle va créer sur base des informations fournies par l'utilisateur.
+ * La classe Interaction permet de gÃ©rer toutes les interactions avec l'utilisateur. 
+ * Elle est caractÃ©risÃ©e par une matrice qu'elle va crÃ©er sur base des informations fournies par l'utilisateur.
  *
  * @author Nicolas Verhaeghe
- * @author Théo Constant
+ * @author ThÃ©o Constant
  * @author Florian Vangaeveren
  */
 public class Interaction {
 	
 	/**
-	 * La matrice qu'elle crée et qu'elle remplit.
+	 * La matrice qu'elle crÃ©e et qu'elle remplit.
 	 */
 	private Matrice matrice;
 
 	/**
-	 * La sortie permettant de sauvegarder les résultats d'un problème
+	 * La sortie permettant de sauvegarder les rÃ©sultats d'un problÃ¨me.
 	 */
 	private Impression sortie;
 
 	
 	/**
-	 * Le scanner permettant de lire les données entrées par l'utilisateur
+	 * Le scanner permettant de lire les donnÃ©es entrÃ©es par l'utilisateur.
 	 */
 	private Scanner userInput;
 	
 	
 	/**
 	 * Constructeur Interaction.
-	 * Il instancie la matrice.
+	 * Il instancie la matrice et gÃ¨re la crÃ©ation du fichier de sortie.
 	 */
 	public Interaction() {
 		userInput = new Scanner(System.in);
-		boolean erreurs=true;
+		boolean erreurs = true;
 		this.matrice = new Matrice();
 		while(erreurs) {
 			try {
 				sortie = new Impression(fichierSortie());
-				erreurs=false;
+				erreurs = false;
 			} catch (FileNotFoundException e) {
-				System.out.println("Fichier introuvable, veuillez réessayer.");
+				System.out.println("Fichier introuvable, veuillez rÃ©essayer.");
 			}
 		}
 	}
 
 	/**
-	 * Demande des données à l'utilisateur.
+	 * Demande les donnÃ©es nÃ©cessaires Ã  lâ€™utilisateur.
+	 * Il le fait en plusieurs fois, dâ€™abord pour la fonction objectif puis pour les contraintes, et enregistre tout dans la matrice.
 	 */
 	public void demanderInfos() {
 		//On s'assure que la matrice est vide en cas de relancement du programme
@@ -68,7 +69,7 @@ public class Interaction {
 				userInput.next();
 			}
 			if(varNb<1)
-				System.out.println("Veuillez entrer une valeur numérique supérieure à 0.");
+				System.out.println("Veuillez entrer une valeur numÃ©rique supÃ©rieure Ã  0.");
 
 		}
 
@@ -83,9 +84,9 @@ public class Interaction {
 				userInput.next();
 			}
 			if(contrNb<1)
-				System.out.println("Veuillez entrer une valeur numérique supérieure à 0.");
+				System.out.println("Veuillez entrer une valeur numÃ©rique supÃ©rieure Ã  0.");
 		}
-		//liste temporaire à laquelle on ajoute les contraintes ainsi que la fonction objectif un à un
+		//liste temporaire Ã  laquelle on ajoute les contraintes ainsi que la fonction objectif un Ã  un
 		List<Double> listeCoeff = new ArrayList<Double>();
 
 		//ajout de la fonction objectif
@@ -103,10 +104,10 @@ public class Interaction {
 				tmpCoeff = userInput.next();
 			}
 			catch(InputMismatchException e) {
-				System.out.println("Fonction objectif entrée incorrectement.");
+				System.out.println("Fonction objectif entrÃ©e incorrectement.");
 			}
 			if(tmpCoeff.split(",").length!=varNb)
-				System.out.println("Le nombre de termes insérés ("+tmpCoeff.split(",").length+") n'est pas égal à celui attendu ("+varNb+").");
+				System.out.println("Le nombre de termes insÃ©rÃ©s ("+tmpCoeff.split(",").length+") n'est pas Ã©gal Ã  celui attendu ("+varNb+").");
 		}
 
 		for(int i=0;i<varNb;i++) {
@@ -114,7 +115,7 @@ public class Interaction {
 				listeCoeff.add(Double.parseDouble(tmpCoeff.split(",")[i]));
 			}
 			catch(NumberFormatException e) {
-				System.out.print("Le terme à la position "+(i+1)+" n'es pas valide, veuillez le remplacer : ");
+				System.out.print("Le terme Ã  la position "+(i+1)+" n'es pas valide, veuillez le remplacer : ");
 				boolean erreur=true;
 				while(erreur) {
 					try {
@@ -122,7 +123,7 @@ public class Interaction {
 						erreur=false;
 					}
 					catch(InputMismatchException z) {
-						System.out.print("Nouvelle valeur incorrecte, veuillez réessayer : ");
+						System.out.print("Nouvelle valeur incorrecte, veuillez rÃ©essayer : ");
 						userInput.next();
 					}
 				}
@@ -131,7 +132,7 @@ public class Interaction {
 		//sauvegarde des coefficients de la fonction objectif pour l'ajouter plus tard dans la matrice
 		List<Double> objectif = new ArrayList<Double>(listeCoeff);
 
-		System.out.println("Entrez les " + varNb + " coefficients des variables suivis du terme indépendant des contraintes, séparés par des virgules.");
+		System.out.println("Entrez les " + varNb + " coefficients des variables suivis du terme indÃ©pendant des contraintes, sÃ©parÃ©s par des virgules.");
 		System.out.println("Exemple: 2,7,-3,18");
 
 		//ajout des coefficients pour chaque contrainte
@@ -139,10 +140,10 @@ public class Interaction {
 			tmpCoeff="";
 			listeCoeff.clear();
 			while(tmpCoeff.split(",").length!=varNb+1) {
-				System.out.print("Inéquation n°"+(i+1)+": ");
+				System.out.print("InÃ©quation nÂ°"+(i+1)+": ");
 				tmpCoeff = userInput.next();
 				if(tmpCoeff.split(",").length!=varNb+1) {
-					System.out.println("Le nombre de termes insérés ("+tmpCoeff.split(",").length+") n'est pas égal à celui attendu ("+(varNb+1)+").");
+					System.out.println("Le nombre de termes insÃ©rÃ©s ("+tmpCoeff.split(",").length+") n'est pas Ã©gal Ã  celui attendu ("+(varNb+1)+").");
 				}
 			}
 			for(int j=0;j<varNb+1;j++){
@@ -150,7 +151,7 @@ public class Interaction {
 					listeCoeff.add(Double.parseDouble(tmpCoeff.split(",")[j]));
 				}
 				catch(NumberFormatException e) {
-					System.out.print("Le terme à la position "+(j+1)+" n'es pas valide, veuillez le remplacer : ");
+					System.out.print("Le terme Ã  la position "+(j+1)+" n'es pas valide, veuillez le remplacer : ");
 					boolean erreur=true;
 					while(erreur) {
 						try {
@@ -158,7 +159,7 @@ public class Interaction {
 							erreur=false;
 						}
 						catch(InputMismatchException z) {
-							System.out.print("Nouvelle valeur incorrecte, veuillez réessayer : ");
+							System.out.print("Nouvelle valeur incorrecte, veuillez rÃ©essayer : ");
 							userInput.next();
 						}
 					}
@@ -167,13 +168,13 @@ public class Interaction {
 			this.matrice.ajouterLigne(new ArrayList<Double>(listeCoeff));
 		}
 
-		//ajout de la fonction objectif dans la matrice à l'aide de la liste créée précédemment
+		//ajout de la fonction objectif dans la matrice Ã  l'aide de la liste crÃ©Ã©e prÃ©cÃ©demment
 		this.matrice.ajouterLigne(new ArrayList<Double>(objectif));
 	}
 	
 	/**
-	 * Donne un nom au fichier de sortie afin de pouvoir y écrire
-	 * @return Le nom du fichier où écrire
+	 * Donne un nom au fichier de sortie afin de pouvoir y Ã©crire.
+	 * @return Le nom du fichier oÃ¹ Ã©crire.
 	 */
 	public String fichierSortie() {
 		System.out.print("Nom du fichier de sortie: ");
@@ -181,20 +182,20 @@ public class Interaction {
 	}
 
 	/**
-	 * Appelle la méthode calculerSolution de la classe Simplexe et affiche la chaîne qu'elle retourne.
+	 * Appelle la mÃ©thode calculerSolution de la classe Simplexe et envoie le rÃ©sultat Ã  ecrireDonnees() de la classe Impression.
 	 */
 	public void executerSimplexe() {
 		sortie.ecrireDonnees(Simplexe.calculerSolution(this.matrice));
 	}
 	
 	/**
-	 * Demande à l'utilisateur s'il désire recommencer l'algorithme avec un nouveau problème
+	 * Demande Ã  l'utilisateur s'il dÃ©sire recommencer l'algorithme avec un nouveau problÃ¨me.
 	 * @return Le choix de l'utilisateur
 	 */
 	public boolean isRecommencer() {
 		String reponse="";
 		while(!reponse.equalsIgnoreCase("o") || !reponse.equalsIgnoreCase("n")) {
-			System.out.println("Voulez-vous recommencer avec un autre problème ? (O/N)");
+			System.out.println("Voulez-vous recommencer avec un autre problÃ¨me ? (O/N)");
 			reponse=userInput.next();
 			if(reponse.equalsIgnoreCase("o")) {
 				return true;
@@ -203,7 +204,7 @@ public class Interaction {
 				return false;
 			}
 			else {
-				System.out.println("Erreur - Veuillez répondre par oui (O) ou non (N).");
+				System.out.println("Erreur - Veuillez rÃ©pondre par oui (O) ou non (N).");
 			}
 		}
 		return false;
