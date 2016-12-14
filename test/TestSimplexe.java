@@ -53,7 +53,7 @@ public class TestSimplexe {
 			add(5.);add(6.);add(7.);add(0.);add(0.);add(0.);add(0.);
 		}});
 
-		//Ajout de 3 inéquations avec fonction objectif sans matrice identité ni 0 supplémentaires pour la fonction objectif
+		//Ajout de 3 in�quations avec fonction objectif sans matrice identité ni 0 supplémentaires pour la fonction objectif
 		matNoIdAl.add(new ArrayList<Double>(){{
 			add(3.);add(2.);add(4.);add(24.);
 		}});
@@ -72,7 +72,7 @@ public class TestSimplexe {
 	public void testCalculerSolution() {
 		//Coefficients fonctionnels
 		assertTrue("La valeur optimale a été trouvée.",smplx.calculerSolution(matNoId).contains("La valeur optimale de Z est de 72.0"));
-		//Coefficients du pivot tous à 0
+		//Coefficients du pivot tous � 0
 		matVideAl.add(new ArrayList<Double>(){{add(3.);add(2.);add(0.);add(24.);}});
 		matVideAl.add(new ArrayList<Double>(){{add(4.);add(1.);add(0.);add(24.);}});
 		matVideAl.add(new ArrayList<Double>(){{add(1.);add(1.);add(0.);add(15.);}});
@@ -112,8 +112,8 @@ public class TestSimplexe {
 
 	@Test
 	public void testRechercherPivotCol() {
-		assertTrue("La colonne du pivot a été trouvée correctement",smplx.rechercherPivotCol(matId)==2);
-		//Toujours prendre l'élem. le plus à gauche en cas de doublon
+		assertTrue("La colonne du pivot a �t� trouv�e correctement",smplx.rechercherPivotCol(matId)==2);
+		//Toujours prendre l'élement le plus à gauche en cas de doublon
 		matIdAl.get(3).set(0, 7.);
 		matIdAl.get(3).set(1, 7.);
 		assertTrue("La colonne choisie est celle la plus à gauche en cas de doublons",smplx.rechercherPivotCol(matId)==0);
