@@ -21,7 +21,6 @@ public class TestSimplexe {
 	private ArrayList<List<Double>> matNoIdAl;
 	private Matrice matVide;
 	private ArrayList<List<Double>> matVideAl;
-	private Simplexe smplx;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -31,7 +30,6 @@ public class TestSimplexe {
 	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws Exception {
-		smplx = new Simplexe();
 		matId = new Matrice();
 		matIdAl = (ArrayList<List<Double>>)Explorateur.getField(matId, "mat");
 		matNoId = new Matrice();
@@ -71,25 +69,25 @@ public class TestSimplexe {
 	@Test
 	public void testCalculerSolution() {
 		//Coefficients fonctionnels
-		assertTrue("La valeur optimale a été trouvée.",smplx.calculerSolution(matNoId).contains("La valeur optimale de Z est de 72.0"));
+		assertTrue("La valeur optimale a été trouvée.",Simplexe.calculerSolution(matNoId).contains("La valeur optimale de Z est de 72.0"));
 		//Coefficients du pivot tous à 0
 		matVideAl.add(new ArrayList<Double>(){{add(3.);add(2.);add(0.);add(24.);}});
 		matVideAl.add(new ArrayList<Double>(){{add(4.);add(1.);add(0.);add(24.);}});
 		matVideAl.add(new ArrayList<Double>(){{add(1.);add(1.);add(0.);add(15.);}});
 		matVideAl.add(new ArrayList<Double>(){{add(5.);add(6.);add(7.);}});
-		assertTrue("La solution n'admet pas de solution",smplx.calculerSolution(matVide).contains("pas de solution"));
+		assertTrue("La solution n'admet pas de solution",Simplexe.calculerSolution(matVide).contains("pas de solution"));
 		matVide.getMat().clear();
 		//Rapports négatifs
 		matVideAl.add(new ArrayList<Double>(){{add(3.);add(2.);add(4.);add(-24.);}});
 		matVideAl.add(new ArrayList<Double>(){{add(4.);add(1.);add(-2.);add(24.);}});
 		matVideAl.add(new ArrayList<Double>(){{add(1.);add(1.);add(-5.);add(15.);}});
 		matVideAl.add(new ArrayList<Double>(){{add(5.);add(6.);add(7.);}});
-		assertTrue("La solution n'admet pas de solution",smplx.calculerSolution(matVide).contains("pas de solution"));
+		assertTrue("La solution n'admet pas de solution",Simplexe.calculerSolution(matVide).contains("pas de solution"));
 	}
 
 	@Test
 	public void testAjouterMatriceIdentite() {
-		smplx.ajouterMatriceIdentite(matNoId);
+		Simplexe.ajouterMatriceIdentite(matNoId);
 		int nbContraintes = matNoIdAl.size()-1;
 		int nbVariables = (matNoIdAl.get(0).size()-nbContraintes-1);
 
@@ -112,17 +110,17 @@ public class TestSimplexe {
 
 	@Test
 	public void testRechercherPivotCol() {
-		assertTrue("La colonne du pivot a été trouvée correctement",smplx.rechercherPivotCol(matId)==2);
+		assertTrue("La colonne du pivot a été trouvée correctement",Simplexe.rechercherPivotCol(matId)==2);
 		//Toujours prendre l'élement le plus à gauche en cas de doublon
 		matIdAl.get(3).set(0, 7.);
 		matIdAl.get(3).set(1, 7.);
-		assertTrue("La colonne choisie est celle la plus à gauche en cas de doublons",smplx.rechercherPivotCol(matId)==0);
+		assertTrue("La colonne choisie est celle la plus à gauche en cas de doublons",Simplexe.rechercherPivotCol(matId)==0);
 	}
 
 	@Test
 	public void testRechercherPivotLigne() {
 		try {
-			assertTrue("La ligne du pivot a été trouvée correctement.",smplx.rechercherPivotLigne(matId, 2)==2);
+			assertTrue("La ligne du pivot a été trouvée correctement.",Simplexe.rechercherPivotLigne(matId, 2)==2);
 		}
 		catch(RapportsIncorrectsException e) {
 			fail("La ligne du pivot aurait du être trouvée");
@@ -132,7 +130,7 @@ public class TestSimplexe {
 		matIdAl.get(1).set(6, -5.);
 		matIdAl.get(2).set(2, 0.);
 		try {
-			smplx.rechercherPivotLigne(matId, 2);
+			Simplexe.rechercherPivotLigne(matId, 2);
 			fail("Une erreur aurait du se produire");
 		}
 		catch(RapportsIncorrectsException e) {
@@ -142,7 +140,7 @@ public class TestSimplexe {
 	@Test
 	public void testRendrePivotUnitaire() {
 		List<Double> checkList = new ArrayList<Double>(matIdAl.get(2));
-		smplx.rendrePivotUnitaire(matId, 2, 2);
+		Simplexe.rendrePivotUnitaire(matId, 2, 2);
 		for(int i=0;i<checkList.size();i++) {
 			if(checkList.get(i)/checkList.get(2)!=matIdAl.get(2).get(i)) {
 				fail("Le pivot n'a pas été rendu unitaite");
@@ -153,8 +151,8 @@ public class TestSimplexe {
 	@Test
 	public void testActualiserMatrice() {
 		List<Double> checkList = new ArrayList<Double>(matIdAl.get(0));
-		smplx.rendrePivotUnitaire(matId, 2, 2);
-		smplx.actualiserMatrice(matId, 2, 2);
+		Simplexe.rendrePivotUnitaire(matId, 2, 2);
+		Simplexe.actualiserMatrice(matId, 2, 2);
 		for(int i=0;i<checkList.size();i++) {
 			if(checkList.get(i)-checkList.get(2)*matIdAl.get(2).get(i) != matIdAl.get(0).get(i)) {
 				fail("La matrice n'a pas été actualisée correctement");
@@ -172,7 +170,7 @@ public class TestSimplexe {
 		
 		matIdAl.get(0).set(1,0.);
 		
-		assertTrue("La matrice des solutions de base est effectivement générée.",smplx.genererSolBase(matId, solBase).contains("{    0.000 ;    0.000 ;    0.000 ;   24.000 ;   24.000 ;   15.000 }"));
+		assertTrue("La matrice des solutions de base est effectivement générée.",Simplexe.genererSolBase(matId, solBase).contains("{    0.000 ;    0.000 ;    0.000 ;   24.000 ;   24.000 ;   15.000 }"));
 	}
 
 	@Test
@@ -181,9 +179,9 @@ public class TestSimplexe {
 		matVideAl.add(new ArrayList<Double>(){{add(2.5);add(0.);add(0.);add(-0.5);add(1.);add(0.);add(12.);}});
 		matVideAl.add(new ArrayList<Double>(){{add(-0.5);add(0.);add(3.);add(-0.5);add(0.);add(1.);add(3.);}});
 		matVideAl.add(new ArrayList<Double>(){{add(-4.);add(0.);add(-5.);add(-3.);add(0.);add(0.);add(-72.);}});
-		assertTrue("La matrice est solution du problème",smplx.isSolution(matVide));
+		assertTrue("La matrice est solution du problème",Simplexe.isSolution(matVide));
 		
-		assertFalse("La matrice n'est pas solution du problème, smplx",smplx.isSolution(matId));
+		assertFalse("La matrice n'est pas solution du problème, smplx",Simplexe.isSolution(matId));
 	}
 
 }
