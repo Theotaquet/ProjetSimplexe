@@ -4,7 +4,8 @@ import exception.RapportsIncorrectsException;
 
 /**
  * La classe Simplexe s'occupe des différents traitements propres à la méthode du Simplexe.
- * Elle ne comporte que des méthodes statiques, dont calculerSolution qui appelle toutes les autres méthodes.
+ * Elle ne comporte que des méthodes statiques.
+ * Elle n'a aucun attribut et aucun objet n'est instancié durant le programme.
  *
  * @author Nicolas Verhaeghe
  * @author Théo Constant
@@ -14,37 +15,48 @@ public class Simplexe {
 	
 	/**
 	 * Appelle toutes les autres méthodes et gère la boucle correspondant aux itérations du Simplexe.
+	 * Elle peut être considérée comme la méthode principale car c'est la seule appelée en dehors de la classe.
+	 * Elle repose sur une boucle correspondant aux itérations du Simplexe et c’est elle qui appelle toutes les autres méthodes. 
 	 * @param matrice La matrice sur laquelle on applique les traitements.
 	 * @return Les différentes itérations avec leur solution de base, ainsi que la solution optimale, sous forme de chaîne de caractères.
 	 */
 	public static String calculerSolution(Matrice matrice) {
-		String res = "---------------------------------------------------------------------------------\nRESOLUTION DU SIMPLEXE\n";
-		res+="---------------------------------------------------------------------------------\nMax Z = ";
-		for(int i=0;i<matrice.getMat().get(matrice.getMat().size()-1).size();i++) {
-			res+=matrice.getMat().get(matrice.getMat().size()-1).get(i)+" x"+(i+1)+" ";
+		//solBase contiendra la solution de base pour chaque itération
+		List<Double> solBase = new ArrayList<Double>();
+		List<Double> derniereLigneListe = matrice.getMat().get(matrice.getMat().size() - 1);
+		
+		//la chaîne res sera renvoyée à la fin de la méthode
+		String res = "---------------------------------------------------------------------------------\n"
+			+ "RESOLUTION DU SIMPLEXE\n"
+			+ "---------------------------------------------------------------------------------\n"
+			+ "Max Z = ";
+		
+		for(int i=0;i<derniereLigneListe.size();i++) {
+			res += derniereLigneListe.get(i)+ " x" + (i+1) + " ";
 		}
-		res+="\n";
+		res += "\n";
 		for(int i=0;i<matrice.getMat().size()-1;i++) {
 			for(int j=0;j<matrice.getMat().get(i).size();j++) {
 				if(j==matrice.getMat().get(i).size()-1) {
-					res+="<= "+matrice.getMat().get(i).get(j)+"\n";
+					res += "<= " + matrice.getMat().get(i).get(j) + "\n";
 				}
 				else {
-					res+=matrice.getMat().get(i).get(j)+" x"+(i+1)+" ";
+					res += matrice.getMat().get(i).get(j) + " x" + (i+1) + " ";
 				}
 			}
 		}
-		res+="\n---------------------------------------------------------------------------------\n";
-		res+="Tableau Initial\n---------------------------------------------------------------------------------\n";
-		List<Double> solBase = new ArrayList<Double>();
+		re s+= "\n---------------------------------------------------------------------------------\n"
+			+ "Tableau Initial\n---------------------------------------------------------------------------------\n";
 		
 		ajouterMatriceIdentite(matrice);
 		
+		//solBase est initialisée
 		for(int i=0;i<matrice.getMat().get(0).size();i++) {
 			solBase.add(0.);
 		}
 		
 		//boucle correspondant aux itérations du Simplexe
+		//elle prend fin lorsqu’une erreur est détectée ou que la solution optimale est trouvée
 		res += matrice.toString();
 		res += genererSolBase(matrice, solBase);
 		boolean erreurSol = false;
@@ -62,7 +74,7 @@ public class Simplexe {
 			}
 			catch(RapportsIncorrectsException e) {
 				res += e.getMessage();
-				erreurSol=true;
+				erreurSol = true;
 			}
 		}
 		if(!erreurSol) {
@@ -77,7 +89,7 @@ public class Simplexe {
 	 * @param matrice La matrice sur laquelle on applique les traitements.
 	 */
 	public static void ajouterMatriceIdentite(Matrice matrice) {
-		//boucle sur les lignes correspondant aux contraintes
+		//boucle sur les lignes correspondant aux contraintes et rajoute un 1 ou un 0
 		for(int i=0;i<matrice.getMat().size()-1;i++) {
 			List<Double> ligne = matrice.getMat().get(i);
 			for(int j=0;j<matrice.getMat().size()-1;j++) {
@@ -96,6 +108,7 @@ public class Simplexe {
 	
 	/**
 	 * Recherche la colonne du pivot.
+	 * Elle consiste en une boucle qui recherche le maximum dans les éléments de la dernière ligne de la matrice.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
 	 * @return L'indice de la colonne du pivot.
 	 */
@@ -109,11 +122,14 @@ public class Simplexe {
 				max = element;
 		}
 		
+		//indexOf permet de renvoyer d’office le premier élément rencontré, donc ici le plus à gauche (important en cas d’égalité).
 		return derniereLigneListe.indexOf(max);
 	} 
 	
 	/**
 	 * Recherche la ligne du pivot.
+	 * Elle boucle sur les lignes des contraintes et recherche le minimum des rapports entre l’élément de la dernière colonne et celle du pivot.
+	 * Elle évite de traiter les lignes qui conduisent à un rapport négatif ou une division par zéro. 
 	 * @param matrice La matrice sur laquelle on applique les traitements.
 	 * @param pivotCol L'indice de la colonne du pivot.
 	 * @return L'indice de la ligne du pivot.
@@ -133,6 +149,7 @@ public class Simplexe {
 				}
 			}
 		}
+		//Si aucune ligne ne convient (si minLigne n’a pas changé de valeur), une exception RapportIncorrectException est lancée
 		if(minLigne==-1) {
 			throw new RapportsIncorrectsException();
 		}
@@ -141,6 +158,7 @@ public class Simplexe {
 	
 	/**
 	 * Modifie la ligne du pivot en rendant le pivot unitaire.
+	 * Elle boucle sur chaque élément de la ligne et le divise par la valeur du pivot.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
 	 * @param pivotLigne L'indice de la ligne du pivot.
 	 * @param pivotCol L'indice de la colonne du pivot.
@@ -157,6 +175,7 @@ public class Simplexe {
 	
 	/**
 	 * Modifie les autres lignes en fonction de la ligne du pivot.
+	 * Elle boucle sur chaque ligne en évitant celle du pivot (l’indice est comparé) et elle modifie les valeurs.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
 	 * @param pivotLigne L'indice de la ligne du pivot.
 	 * @param pivotCol L'indice de la colonne du pivot.
@@ -177,6 +196,9 @@ public class Simplexe {
 	
 	/**
 	 * Crée et concatène une chaîne de caractères qui contiendra la solution de base de l'itération traitée.
+	 * Elle vérifie si chaque variable est une variable de base ou hors base.
+	 * VB: remplit la chaîne avec le terme indépendant correspondant.
+	 * VHB: remplit avec un zéro.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
 	 * @param solBase Liste instanciée dans calculerSolution qui contiendra la solution de base de l'itération traitée.
 	 * @return La solution de base de l'itération traitée.
@@ -190,9 +212,10 @@ public class Simplexe {
 		for(int i=0;i<derniereCol;i++) {
 			boolean varBase = true;
 			boolean presence1 = false;
-			//boucle sur les éléments de la colonne actuelle tant qu'il n'y a que des 0 et un seul 1
+			//boucle sur les éléments de la colonne actuelle tant que c'est une variable de base potentielle
 			int j = 0;
 			while(varBase && j<matrice.getMat().size()-1) {
+				//conditions pour être une variable de base: colonne composée de 0 et d'un seul 1
 				if( (matrice.getMat().get(j).get(i)!=0&&matrice.getMat().get(j).get(i)!=1) || (matrice.getMat().get(j).get(i)==1&&presence1) )
 					varBase = false;
 				//test sur la présence de 1
@@ -204,15 +227,16 @@ public class Simplexe {
 			}
 			
 			if(varBase)
-				//attribution du terme indépendant correspondant
+				//attribution du terme indépendant de la ligne du 1 si variable de base
 				solBase.set(i, matrice.getMat().get(ligne1).get(derniereCol));
 			else
+				//attribution d'un 0 si hors base
 				solBase.set(i, 0.);
 		}
-		//attribution du Z
+		//attribution de la valeur du Z (fin de la dernière ligne de la matrice)
 		solBase.set(derniereCol, 0 - (matrice.getMat().get(matrice.getMat().size()-1).get(derniereCol)));
 		
-		//génération de la chaîne
+		//génération de la chaîne en bouclant sur solBase et grâce à String.format()
 		sol += "\nSB = { ";
 		for(int i=0;i<solBase.size()-1;i++) {
 			String newElement = String.format("%8.3f", solBase.get(i));
@@ -229,6 +253,7 @@ public class Simplexe {
 	
 	/**
 	 * Vérifie si la solution de base de l'itération traitée est admissible comme solution optimale.
+	 * Elle boucle sur la ligne de la fonction objectif et vérifie si tous éléments sont négatifs ou nuls.
 	 * @param matrice La matrice sur laquelle on applique les traitements.
 	 * @return Booléen qui valide ou non la solution.
 	 */
